@@ -3,18 +3,20 @@
 <head>
   <title>Todo List</title>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="aws-sdk-2.929.0.min.js"></script>
+  <script src="script.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>Today's Tasks...</h1>
     <div class="to-do section">
-      <h2>Daily Tasks</h2>
+      <h2>Daily Tasks:</h2>
       <input id="todo-input" type="text" placeholder="Add a new to-do">
       <button id="add-button">Add</button>
       <ul id="todo-list"></ul>
     </div>
     <div class="section note-section">
-      <h2>Note To Self</h2>
+      <h2>Note To Self:</h2>
       <div class="note-container">
         <textarea id="note-input" placeholder="Add a note for yourself"></textarea>
         <button id="save-button">Save</button>
@@ -22,6 +24,5 @@
       <ul id="note-list"></ul>
     </div>
   </div>
-  <script src="script.js"></script>
 </body>
 </html>

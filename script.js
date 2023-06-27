@@ -6,7 +6,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const noteInput = document.getElementById("note-input");
     const saveButton = document.getElementById("save-button");
     const noteList = document.getElementById("note-list");
-  
+
+    // AWS SDK Configuration
+  AWS.config.update({
+    region: 'us-east-1' 
+  });
+
+  const s3 = new AWS.S3();
+
     addButton.addEventListener("click", function() {
       const todoText = todoInput.value.trim();
       if (todoText !== "") {
@@ -132,3 +139,35 @@ document.addEventListener("DOMContentLoaded", function() {
     loadNotesFromLocalStorage();
   });
   
+// Function to upload file to S3 bucket
+function uploadFileToS3(file, fileName) {
+    const params = {
+      Bucket: 'my-todo-list-bucket',
+      Key: fileName,
+      Body: file,
+      ACL: 'public-read'
+    };
+
+    s3.upload(params, function(err, data) {
+      if (err) {
+        console.log('Error uploading file to S3:', err);
+      } else {
+        console.log('File uploaded to S3 successfully:', data.Location);
+      }
+    });
+  }
+
+  // Fetch and upload index.html file from project directory
+  fetch('index.html')
+    .then(response => response.text())
+    .then(html => {
+      const file = new File([html], 'index.html');
+      const fileName = 'index.html';
+      uploadFileToS3(file, fileName);
+    })
+    .catch(error => {
+      console.log('Error fetching index.html:', error);
+    });
+
+  loadTodosFromLocalStorage();
+  loadNotesFromLocalStorage();
